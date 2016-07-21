@@ -7,6 +7,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.RandomAccessFile;
+import java.util.Map;
+import java.util.Properties;
 
 import android.os.Environment;
 
@@ -185,6 +188,146 @@ public class FileUtils {
 			runtime.exec(command);
 		} catch (Exception e) {
 			LogUtils.e(e);
+		}
+	}
+	/**
+	 * 字符数组数据写入文件
+	 * @param content 需要写入的字符数组
+	 * @param path 文件路径
+	 * @param append 是否已添加模式写入
+	 * @return 是否写入成功
+	 */
+	public static boolean writeFile(byte[] content,String path,boolean append){
+		boolean res  = false;
+		File f = new File(path);
+		RandomAccessFile raf = null;
+		try {
+			if(f.exists()){
+				if(!append){
+					f.delete();
+					f.createNewFile();
+				}
+			}else{
+				f.createNewFile();
+			}
+			if(f.canWrite()){
+				raf = new RandomAccessFile(f, "rw");
+				raf.seek(raf.length());
+				raf.write(content);
+				res = true;
+			}
+			
+		} catch (Exception e) {
+			LogUtils.e(e);
+		}finally{
+			IOUtils.close(raf);
+		}
+		return res;
+	}
+	/**
+	 * 字符串写入文件
+	 * @param content 写入到字符串
+	 * @param path 写入的位置
+	 * @param append 是否添加模式写入
+	 * @return 是否成功
+	 */
+	public static boolean writeFile(String content,String path,boolean append){
+		return writeFile(content.getBytes(),path,append);
+	}
+	/**
+	 * 把键值对写入文件
+	 * @param filePath 文件了路径
+	 * @param key 键
+	 * @param value 值
+	 * @param comment 键值对的注解
+	 */
+	public static void writeProperties(String filePath,String key,String value,String comment){
+		if(StringUtils.isEmpty(key)|| StringUtils.isEmpty(filePath)){
+			return ;
+		}
+		FileInputStream fis = null;
+		FileOutputStream fos = null;
+		File f = new File(filePath);
+		try {
+			if(!f.exists()|| !f.isFile()){
+				f.createNewFile();
+			}
+			fis = new FileInputStream(f);
+			Properties p = new Properties();
+			p.load(fis);//先读取文件，再把键值对添加到后面
+			p.setProperty(key, value);
+			fos = new FileOutputStream(f);
+			p.store(fos, comment);
+			
+		} catch (Exception e) {
+			LogUtils.e(e);
+		}finally{
+			IOUtils.close(fis);
+			IOUtils.close(fos);
+		}
+	}
+	/**
+	 * 根据key读取文件
+	 * @param filePath
+	 * @param key
+	 * @param defaultValue
+	 * @return
+	 */
+	public static String readProperties(String filePath,String key,String defaultValue){
+		if(StringUtils.isEmpty(key)||StringUtils.isEmpty(filePath)){
+			return null;
+		}
+		String value = null;
+		
+		FileInputStream fis = null;
+		File f = new File(filePath);
+		try {
+			if(!f.exists() || !f.isFile() ){
+				f.createNewFile();
+			}
+				fis = new FileInputStream(f);
+				Properties p = new Properties();
+				p.load(fis);
+				value = p.getProperty(key, defaultValue);
+			
+		} catch (Exception e) {
+			LogUtils.e(e);
+		}finally{
+			IOUtils.close(fis);
+		}
+		return value;
+	}
+	/**
+	 * 字符串键值对的map写入文件
+	 * @param filePath
+	 * @param map
+	 * @param append
+	 * @param comment
+	 */
+	public static void writeMap(String filePath,Map<String,String> map,boolean append,String comment){
+		if(map == null || map.size() == 0 || StringUtils.isEmpty(filePath)){
+			return;
+		}
+		FileInputStream fis = null;
+		FileOutputStream fos = null;
+		File f = new File(filePath);
+		try {
+			if(!f.exists()||!f.isFile()){
+				f.createNewFile();
+			}
+			Properties p = new Properties();
+			if(append){
+				fis = new FileInputStream(f);
+				p.load(fis);//先读取文件，把键值对追加到后面
+			}
+			p.putAll(map);
+			fos = new FileOutputStream(f);
+			p.store(fos, comment);
+		} catch (Exception e) {
+			LogUtils.e(e);
+		}finally{
+			IOUtils.close(fis);
+			IOUtils.close(fos);
 		}
 	}
 }

@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  * 日志输出控制类 (Description)
- * @author mwqi
+ * @author feng
  */
 public class LogUtils {
 	/** 日志输出级别NONE */
@@ -28,8 +28,8 @@ public class LogUtils {
 	public static final int LEVEL_ERROR = 5;
 
 	/** 日志输出时的TAG */
-	private static String mTag = "mwqi";
-	/** 是否允许输出log */
+	private static String mTag = "googleplay";
+	/** 是否允许输出log 项目上线之后通过修改该值控制Log日志是否打印，避免挨个删除log语句，提高效率*/
 	private static int mDebuggable = LEVEL_ERROR;
 
 	/** 用于记时的变量 */
