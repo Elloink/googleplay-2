@@ -5,11 +5,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 
 import com.googleplay.application.utils.UIUtils;
 import com.googleplay.fragments.AppFragment;
 import com.googleplay.fragments.BaseFragment;
 import com.googleplay.fragments.CategoryFragment;
+import com.googleplay.fragments.FragmentFactory;
 import com.googleplay.fragments.GameFragment;
 import com.googleplay.fragments.HomeFragment;
 import com.googleplay.fragments.HotFragment;
@@ -17,7 +19,7 @@ import com.googleplay.fragments.RecommendFragment;
 import com.googleplay.fragments.SubjectFragment;
 import com.googleplay.widget.PagerTab;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements OnPageChangeListener {
 
     private PagerTab tabs;
 	private ViewPager pager;
@@ -49,11 +51,14 @@ public class MainActivity extends BaseActivity {
 		ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 		pager.setAdapter(adapter);
 		//将pagertab与viewpager绑定在一起
-//		tabs.setViewPager(pager);
+		tabs.setViewPager(pager);
+		tabs.setOnPageChangeListener(this);
 	}
+	
+	
 	private class ViewPagerAdapter extends FragmentStatePagerAdapter{
 		private String[] tab_names;
-		BaseFragment fragment = null;
+		
 		public ViewPagerAdapter(FragmentManager fm) {
 			super(fm);
 			tab_names = UIUtils.getStringArray(R.array.tab_names);
@@ -66,30 +71,7 @@ public class MainActivity extends BaseActivity {
 		@Override
 		public Fragment getItem(int position) {
 			
-			switch (position) {
-			case 0:
-				fragment = new HomeFragment();
-				break;
-			case 1:
-				fragment = new AppFragment();
-				break;
-			case 2:
-				fragment = new GameFragment();
-				break;
-			case 3:
-				fragment = new SubjectFragment();
-				break;
-			case 4:
-				fragment = new RecommendFragment();
-				break;
-			case 5:
-				fragment = new CategoryFragment();
-				break;
-			case 6:
-				fragment = new HotFragment();
-				break;
-			}
-			return fragment;
+			return FragmentFactory.createFragment(position);
 		}
 
 		@Override
@@ -102,6 +84,23 @@ public class MainActivity extends BaseActivity {
 
 	@Override
 	protected void init() {
+	}
+
+
+	@Override
+	public void onPageScrollStateChanged(int arg0) {
+	}
+
+
+	@Override
+	public void onPageScrolled(int arg0, float arg1, int arg2) {
+	}
+
+
+	@Override
+	public void onPageSelected(int position) {
+		BaseFragment fragment = (BaseFragment) FragmentFactory.createFragment(position);
+//		fragment.show();
 	}
     
 }
