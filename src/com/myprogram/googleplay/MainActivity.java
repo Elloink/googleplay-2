@@ -6,24 +6,19 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.support.v4.widget.DrawerLayout;
 
 import com.googleplay.application.utils.UIUtils;
-import com.googleplay.fragments.AppFragment;
 import com.googleplay.fragments.BaseFragment;
-import com.googleplay.fragments.CategoryFragment;
 import com.googleplay.fragments.FragmentFactory;
-import com.googleplay.fragments.GameFragment;
-import com.googleplay.fragments.HomeFragment;
-import com.googleplay.fragments.HotFragment;
-import com.googleplay.fragments.RecommendFragment;
-import com.googleplay.fragments.SubjectFragment;
 import com.googleplay.widget.PagerTab;
 
 public class MainActivity extends BaseActivity implements OnPageChangeListener {
 
     private PagerTab tabs;
 	private ViewPager pager;
-
+	private DrawerLayout drawerlayout;
+	private ViewPagerAdapter adapter;
 
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,14 +36,14 @@ public class MainActivity extends BaseActivity implements OnPageChangeListener {
 
 	@Override
 	protected void initView() {
-		setContentView(R.layout.activity_main); 
+		setContentView(R.layout.activity_main);
 		//侧滑菜单
-//		DrawerLayout drawerlayout = new DrawerLayout(UIUtils.getContext());
+//		drawerlayout = new DrawerLayout(UIUtils.getContext());
 		//初始化横着滚动的title
 		tabs = (PagerTab) findViewById(R.id.tabs);
 		//初始化viewpager
 		pager = (ViewPager) findViewById(R.id.pager);
-		ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+		adapter = new ViewPagerAdapter(getSupportFragmentManager());
 		pager.setAdapter(adapter);
 		//将pagertab与viewpager绑定在一起
 		tabs.setViewPager(pager);
@@ -100,7 +95,7 @@ public class MainActivity extends BaseActivity implements OnPageChangeListener {
 	@Override
 	public void onPageSelected(int position) {
 		BaseFragment fragment = (BaseFragment) FragmentFactory.createFragment(position);
-//		fragment.show();
+		fragment.show();
 	}
     
 }

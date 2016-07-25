@@ -1212,7 +1212,7 @@ containing a value of this type.
         public static final int action_mode_bar_stub=0x7f09002f;
         public static final int action_mode_close_button=0x7f090023;
         public static final int action_progress=0x7f090078;
-        public static final int action_settings=0x7f090083;
+        public static final int action_settings=0x7f090085;
         public static final int action_txt=0x7f090079;
         public static final int activity_chooser_view_content=0x7f090024;
         public static final int always=0x7f09000e;
@@ -1249,6 +1249,7 @@ containing a value of this type.
         public static final int home=0x7f090000;
         public static final int homeAsUp=0x7f090009;
         public static final int icon=0x7f090029;
+        public static final int icon_wrapper=0x7f090083;
         public static final int ifRoom=0x7f090010;
         public static final int image=0x7f090026;
         public static final int item_action=0x7f090077;
@@ -1263,6 +1264,7 @@ containing a value of this type.
         public static final int item_size=0x7f090055;
         public static final int item_title=0x7f090050;
         public static final int item_top=0x7f09004d;
+        public static final int item_txt=0x7f090084;
         public static final int item_version=0x7f090053;
         public static final int iv_1=0x7f090059;
         public static final int iv_2=0x7f09005a;
@@ -1393,7 +1395,8 @@ containing a value of this type.
         public static final int loading_page_empty=0x7f030021;
         public static final int loading_page_error=0x7f030022;
         public static final int loading_page_loading=0x7f030023;
-        public static final int support_simple_spinner_dropdown_item=0x7f030024;
+        public static final int subject_item=0x7f030024;
+        public static final int support_simple_spinner_dropdown_item=0x7f030025;
     }
     public static final class menu {
         public static final int main=0x7f0d0000;

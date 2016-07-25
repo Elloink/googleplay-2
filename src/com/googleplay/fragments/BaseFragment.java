@@ -3,6 +3,7 @@ package com.googleplay.fragments;
 import java.util.List;
 
 import com.googleplay.application.utils.UIUtils;
+import com.googleplay.application.utils.ViewUtils;
 import com.googleplay.fragments.LoadingPager.LoadResult;
 
 import android.annotation.SuppressLint;
@@ -26,7 +27,7 @@ public abstract class BaseFragment extends Fragment {
 				
 				@Override
 				protected View createLoadingView() {
-					return BaseFragment.this.createLoadingView();
+					return BaseFragment.this.createLoadedView();
 				}
 				
 				@Override
@@ -35,12 +36,14 @@ public abstract class BaseFragment extends Fragment {
 				}
 				
 			};
+		}else{
+			ViewUtils.removeSelfFromParent(mContentView);
 		}
 		
 		return mContentView;
 	}
 	
-	protected abstract View createLoadingView();
+	protected abstract View createLoadedView();
 
 	protected abstract LoadResult load();
 

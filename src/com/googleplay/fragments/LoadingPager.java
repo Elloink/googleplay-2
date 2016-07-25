@@ -1,7 +1,5 @@
 package com.googleplay.fragments;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import com.googleplay.application.utils.UIUtils;
 import com.googleplay.manager.ThreadManager;

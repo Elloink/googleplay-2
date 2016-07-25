@@ -7,13 +7,14 @@ import com.googleplay.fragments.LoadingPager.LoadResult;
 
 public class HotFragment extends BaseFragment {
 
+
 	@Override
-	protected View createLoadingView() {
+	protected LoadResult load() {
 		return null;
 	}
 
 	@Override
-	protected LoadResult load() {
+	protected View createLoadedView() {
 		return null;
 	}
 	

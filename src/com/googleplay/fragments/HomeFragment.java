@@ -1,69 +1,73 @@
 package com.googleplay.fragments;
 
 
-import java.util.ArrayList;
 import java.util.List;
 
+import com.googleplay.adapter.MyBaseAdapter;
 import com.googleplay.application.utils.UIUtils;
+import com.googleplay.bean.AppInfo;
 import com.googleplay.fragments.LoadingPager.LoadResult;
+import com.googleplay.holder.BaseHolder;
+import com.googleplay.protocol.HomeProtocol;
 
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
 
 public class HomeFragment extends BaseFragment {
-	private List<String> mDatas;
+	private List<AppInfo> mDatas;
 	@Override
-	protected View createLoadingView() {
+	protected View createLoadedView() {
 		ListView mListView = new ListView(UIUtils.getContext());
-		HomeAdapter adapter = new HomeAdapter();
+		HomeAdapter adapter = new HomeAdapter(mDatas);
 		mListView.setAdapter(adapter);
 		return mListView;
 	}
 
 	@Override
 	protected LoadResult load() {
-		mDatas = new ArrayList<String>();
+		HomeProtocol protocol = new HomeProtocol();
+		mDatas = protocol.load(0);
 		return check(mDatas);
 	}
 		
-	class HomeAdapter extends BaseAdapter{
+	class HomeAdapter extends MyBaseAdapter<AppInfo>{
 
 		private ViewHolder holder;
 
-		@Override
-		public int getCount() {
-			return mDatas.size();
+		public HomeAdapter(List<AppInfo> mDatas) {
+			super(mDatas);
 		}
 
 		@Override
-		public Object getItem(int position) {
-			return mDatas.get(position);
+		public BaseHolder getHolder() {
+			return new ViewHolder();
 		}
 
-		@Override
-		public long getItemId(int position) {
-			return position;
-		}
+		
 
 		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			if(convertView == null){
-				convertView = new View(UIUtils.getContext());
-				holder = new ViewHolder();
-				holder.tv = (TextView) convertView;
-				convertView.setTag(holder);
-			}
-			holder.tv.setText("haha,text!");
-			return convertView;
+		protected List onLoadMore() {
+			HomeProtocol protocol = new HomeProtocol();
+			
+			return protocol.load(getData().size());
 		}
 		
 		
 	}
-	private class ViewHolder{
+	private class ViewHolder extends BaseHolder<String>{
 		TextView tv;
+
+		@Override
+		public View initView() {
+			tv = new TextView(UIUtils.getContext());
+			return tv;
+		}
+
+		@Override
+		public void refreshView() {
+			tv.setText(getData());
+		}
 	}
 }
